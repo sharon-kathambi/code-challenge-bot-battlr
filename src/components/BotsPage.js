@@ -28,12 +28,24 @@ function BotsPage() {
     setBotArmy(botArmyList)
   }
 
+  function removeBotPermanently (armyBot) {
+    if(botArmy.find((bot) => bot === armyBot)){
+      const filterBots = bots.filter(bot => bot !== armyBot)
+      const filterBotArmy = botArmy.filter(bot => bot !== armyBot)
 
+      setBots(filterBots)
+      setBotArmy(filterBotArmy)
+
+      fetch(`http://localhost:6001/bots/${armyBot.id}`, {
+        method: "DELETE"
+      })
+    }
+  }
   
   return (
     <div>
-      <YourBotArmy  botArmy={botArmy} removeBot={removeBotFromArmy} />
-      <BotCollection bots={bots}  addBot={addBotToArmy} />
+      <YourBotArmy  botArmy={botArmy} removeBot={removeBotFromArmy} deleteBot= {removeBotPermanently} />
+      <BotCollection bots={bots}  addBot={addBotToArmy} deleteBot={removeBotPermanently}/>
     </div>
   )
 }
